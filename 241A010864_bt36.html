@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập 36 Tổng Hợp - Nguyễn Thành Đạt - 241A010864</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header & Menu Tabs */
+        header {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: white;
+            padding: 20px 24px 0 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .header-top {
+            max-width: 1000px;
+            margin: 0 auto 16px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header-top h1 {
+            font-size: 20px;
+        }
+
+        .header-top span {
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+
+        .tab-bar {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: #e2e8f0;
+            border: none;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.28);
+            color: #fff;
+        }
+
+        .tab-btn.active {
+            background: #f1f5f9;
+            color: #1e3a8a;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            max-width: 1000px;
+            width: 100%;
+            margin: 24px auto;
+            padding: 0 16px;
+        }
+
+        .tab-panel {
+            display: none;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 22px;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .section-desc {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        /* ================= BÀI 35 & 35A FORM ĐĂNG KÝ ================= */
+        .form-box {
+            max-width: 440px;
+            margin: 0 auto;
+            background: #f8fafc;
+            padding: 24px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #334155;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: 400;
+        }
+
+        .error-msg {
+            color: #dc2626;
+            font-size: 12.5px;
+            display: block;
+            margin-top: 4px;
+            min-height: 16px;
+        }
+
+        .success-msg {
+            margin-top: 14px;
+            padding: 10px;
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 14px;
+            display: none;
+        }
+
+        .btn-action {
+            padding: 10px 18px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-action:hover {
+            background: #1d4ed8;
+        }
+
+        /* ================= BÀI 35B ĐỒNG HỒ ĐẾM NGƯỢC ================= */
+        .timer-box {
+            max-width: 420px;
+            margin: 0 auto;
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 36px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .timer-display {
+            font-size: 4.5rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            margin: 16px 0 24px 0;
+            color: #38bdf8;
+        }
+
+        .timer-display.warning {
+            color: #ef4444;
+            animation: pulseWarning 1s infinite ease-in-out;
+        }
+
+        @keyframes pulseWarning {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.07); }
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .timer-controls button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+        }
+
+        #tStartBtn { background: #10b981; }
+        #tPauseBtn { background: #f59e0b; }
+        #tResetBtn { background: #64748b; }
+
+        /* ================= 5 CÂU LÝ THUYẾT JS ================= */
+        .qa-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .qa-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px 16px;
+            background: #f8fafc;
+        }
+
+        .qa-item h3 {
+            font-size: 16px;
+            color: #1e3a8a;
+            margin-bottom: 6px;
+        }
+
+        .qa-item p {
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        /* ================= BÀI 34 TRẮC NGHIỆM ================= */
+        .quiz-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 14px;
+            background: #f8fafc;
+        }
+
+        .quiz-item p {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+
+        .quiz-item label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        #quiz-result {
+            margin-top: 14px;
+            font-weight: bold;
+            font-size: 16px;
+            color: #15803d;
+        }
+
+        /* ================= MINI GAME (BT36) ================= */
+        .game-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .info-bar {
+            width: 500px;
+            max-width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        #start-game-btn {
+            padding: 8px 18px;
+            font-size: 15px;
+            font-weight: bold;
+            background-color: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        #start-game-btn:hover {
+            background-color: #15803d;
+        }
+
+        #game-container {
+            width: 500px;
+            max-width: 100%;
+            height: 400px;
+            border: 3px solid #334155;
+            border-radius: 12px;
+            background-color: #fffde7;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        #basket {
+            width: 80px;
+            height: 22px;
+            background-color: #8d5524;
+            border-radius: 0 0 12px 12px;
+            border-top: 4px solid #5c3310;
+            position: absolute;
+            bottom: 10px;
+            left: 210px;
+        }
+
+        #apple {
+            width: 26px;
+            height: 26px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            position: absolute;
+            top: 0px;
+            left: 237px;
+            box-shadow: inset -3px -3px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        #apple::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 11px;
+            width: 4px;
+            height: 7px;
+            background-color: #16a34a;
+            border-radius: 2px;
+        }
+
+        #game-over {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(15, 23, 42, 0.88);
+            color: #f87171;
+            padding: 20px 36px;
+            border-radius: 10px;
+            font-size: 30px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        footer a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <h1>BÀI TẬP 36 - TỔNG HỢP JAVASCRIPT</h1>
+            <span>SV: Nguyễn Thành Đạt | MSSV: 241A010864 | Lớp: 261INT440710</span>
+        </div>
+        <nav class="tab-bar">
+            <button class="tab-btn active" data-tab="tab-bt35">1. Bài 35 & 35a (Form Đăng Ký)</button>
+            <button class="tab-btn" data-tab="tab-bt35b">2. Bài 35b (Đồng Hồ Đếm Ngược)</button>
+            <button class="tab-btn" data-tab="tab-qa">3. 5 Câu Lý Thuyết JS</button>
+            <button class="tab-btn" data-tab="tab-bt34">4. Bài 34 (Trắc nghiệm JS)</button>
+            <button class="tab-btn" data-tab="tab-game">5. Mini Game Hứng Táo (BT36)</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- THỨ 1: BÀI 35 & 35A FORM ĐĂNG KÝ -->
+        <section id="tab-bt35" class="tab-panel active">
+            <h2 class="section-title">Bài tập 35 & 35a — Form Đăng Ký Tài Khoản</h2>
+            <p class="section-desc">Validate dữ liệu đầu vào, băm mật khẩu SHA-256 và lưu LocalStorage.</p>
+            <div class="form-box">
+                <form id="registerForm" novalidate>
+                    <div class="form-group">
+                        <label for="fullname">Họ và tên</label>
+                        <input type="text" id="fullname" placeholder="Nhập họ và tên...">
+                        <small class="error-msg" id="nameError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="example@gmail.com">
+                        <small class="error-msg" id="emailError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Mật khẩu</label>
+                        <input type="password" id="password" placeholder="Tối thiểu 8 ký tự (Hoa, thường, số)">
+                        <small class="error-msg" id="passwordError"></small>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="terms">
+                        <label for="terms">Tôi đồng ý với các điều khoản & dịch vụ</label>
+                    </div>
+                    <small class="error-msg" id="termsError"></small>
+                    <button type="submit" class="btn-action" style="width: 100%; margin-top: 8px;">Đăng Ký</button>
+                    <div id="successMessage" class="success-msg"></div>
+                </form>
+            </div>
+        </section>
+
+        <!-- THỨ 2: BÀI 35B ĐỒNG HỒ ĐẾM NGƯỢC -->
+        <section id="tab-bt35b" class="tab-panel">
+            <h2 class="section-title">Bài tập 35b — Đồng Hồ Đếm Ngược</h2>
+            <p class="section-desc">Đếm ngược từ 10:00, cảnh báo đỏ dưới 1 phút và thông báo khi hết giờ.</p>
+            <div class="timer-box">
+                <div style="color: #94a3b8; font-weight: 600; letter-spacing: 1px;">ĐỒNG HỒ ĐẾM NGƯỢC</div>
+                <div id="timer" class="timer-display">10:00</div>
+                <div class="timer-controls">
+                    <button id="tStartBtn">Bắt đầu</button>
+                    <button id="tPauseBtn">Tạm dừng</button>
+                    <button id="tResetBtn">Đặt lại</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- THỨ 3: 5 CÂU LÝ THUYẾT JS -->
+        <section id="tab-qa" class="tab-panel">
+            <h2 class="section-title">5 Câu Lý Thuyết Cơ Bản Về JavaScript</h2>
+            <p class="section-desc">Tổng hợp câu trả lời ngắn gọn về nền tảng JavaScript.</p>
+            <div class="qa-list">
+                <div class="qa-item">
+                    <h3>1) Javascript là gì?</h3>
+                    <p>JavaScript (JS) là ngôn ngữ lập trình kịch bản (scripting language) phổ biến dùng để tạo tính tương tác, xử lý logic và cập nhật nội dung động cho trang web (cũng chạy được phía server như Node.js).</p>
+                </div>
+                <div class="qa-item">
+                    <h3>2) Mối quan hệ giữa ngôn ngữ Java và Javascript?</h3>
+                    <p>Hai ngôn ngữ hoàn toàn khác nhau về cú pháp, kiểu dữ liệu và cơ chế thực thi (Java thiên về OOP, biên dịch chạy trên JVM; JS thông dịch/JIT, chạy trên trình duyệt/JS engine). Tên "JavaScript" xuất phát từ yếu tố lịch sử/thương mại thời kỳ đầu của web chứ không phải biến thể của Java.</p>
+                </div>
+                <div class="qa-item">
+                    <h3>3) Các kiểu dữ liệu cơ bản của Javascript?</h3>
+                    <p>Gồm kiểu nguyên thủy (<strong>Primitive</strong>): <code>number</code>, <code>string</code>, <code>boolean</code>, <code>undefined</code>, <code>null</code>, <code>symbol</code>, <code>bigint</code>; và kiểu tham chiếu (<strong>Object</strong>): <code>object</code>, <code>array</code>, <code>function</code>.</p>
+                </div>
+                <div class="qa-item">
+                    <h3>4) Javascript và HTML?</h3>
+                    <p>HTML xây dựng cấu trúc và nội dung trang web, còn JavaScript thao tác trực tiếp lên cây <strong>DOM</strong> và sự kiện của HTML để thay đổi nội dung, giao diện và phản hồi tương tác người dùng theo thời gian thực.</p>
+                </div>
+                <div class="qa-item">
+                    <h3>5) Các cách sử dụng Javascript?</h3>
+                    <p>Có 3 cách chính: <strong>Inline</strong> (viết trực tiếp trong thuộc tính sự kiện như <code>onclick="..."</code>), <strong>Internal</strong> (đặt trong thẻ <code>&lt;script&gt;...&lt;/script&gt;</code> trong file HTML), và <strong>External</strong> (tách ra file <code>.js</code> riêng và nhúng qua <code>&lt;script src="..."&gt;&lt;/script&gt;</code>).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- THỨ 4: BÀI 34 TRẮC NGHIỆM JS -->
+        <section id="tab-bt34" class="tab-panel">
+            <h2 class="section-title">Bài tập 34 — Trắc nghiệm JavaScript</h2>
+            <p class="section-desc">Bộ câu hỏi trắc nghiệm nhanh kiểm tra kiến thức JavaScript (Wayground).</p>
+            <div id="quiz-container">
+                <div class="quiz-item">
+                    <p>Câu 1: Từ khóa nào dùng để khai báo hằng số không thể gán lại giá trị trong ES6?</p>
+                    <label><input type="radio" name="q1" value="a"> var</label>
+                    <label><input type="radio" name="q1" value="b"> let</label>
+                    <label><input type="radio" name="q1" value="c"> const</label>
+                </div>
+                <div class="quiz-item">
+                    <p>Câu 2: Toán tử nào so sánh bằng cả giá trị lẫn kiểu dữ liệu trong JavaScript?</p>
+                    <label><input type="radio" name="q2" value="a"> ==</label>
+                    <label><input type="radio" name="q2" value="b"> ===</label>
+                    <label><input type="radio" name="q2" value="c"> =</label>
+                </div>
+                <div class="quiz-item">
+                    <p>Câu 3: Phương thức nào dùng để lấy phần tử HTML theo thuộc tính id?</p>
+                    <label><input type="radio" name="q3" value="a"> document.getElementById()</label>
+                    <label><input type="radio" name="q3" value="b"> document.getElementsByClass()</label>
+                    <label><input type="radio" name="q3" value="c"> document.queryId()</label>
+                </div>
+                <div class="quiz-item">
+                    <p>Câu 4: Kết quả của biểu thức <code>typeof null</code> trong JavaScript là gì?</p>
+                    <label><input type="radio" name="q4" value="a"> "null"</label>
+                    <label><input type="radio" name="q4" value="b"> "undefined"</label>
+                    <label><input type="radio" name="q4" value="c"> "object"</label>
+                </div>
+                <div class="quiz-item">
+                    <p>Câu 5: Phương thức nào chuyển một đối tượng JavaScript thành chuỗi JSON?</p>
+                    <label><input type="radio" name="q5" value="a"> JSON.parse()</label>
+                    <label><input type="radio" name="q5" value="b"> JSON.stringify()</label>
+                    <label><input type="radio" name="q5" value="c"> JSON.toString()</label>
+                </div>
+                <button class="btn-action" id="submitQuizBtn">Nộp bài & Chấm điểm</button>
+                <div id="quiz-result"></div>
+            </div>
+        </section>
+
+        <!-- CUỐI CÙNG: MINI GAME HỨNG TÁO -->
+        <section id="tab-game" class="tab-panel">
+            <h2 class="section-title">Mini Game Hứng Táo</h2>
+            <p class="section-desc">Dùng phím mũi tên Trái (←) và Phải (→) để di chuyển giỏ hứng táo rơi.</p>
+            <div class="game-wrapper">
+                <div class="info-bar">
+                    <div>Điểm số: <span id="score">0</span></div>
+                    <button id="start-game-btn">Bắt đầu</button>
+                    <div>Mạng sống: <span id="lives">3</span></div>
+                </div>
+                <div id="game-container">
+                    <div id="apple"></div>
+                    <div id="basket"></div>
+                    <div id="game-over">Game Over</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <a href="index.html">← Quay lại trang chủ index.html</a>
+    </footer>
+
+    <script>
+        // ================= 0. CHUYỂN TAB =================
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabPanels = document.querySelectorAll('.tab-panel');
+
+        function activateTab(tabId) {
+            const targetBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+            const targetPanel = document.getElementById(tabId);
+            if (!targetBtn || !targetPanel) return;
+
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabPanels.forEach(p => p.classList.remove('active'));
+            targetBtn.classList.add('active');
+            targetPanel.classList.add('active');
+        }
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                activateTab(btn.dataset.tab);
+            });
+        });
+
+        // Hỗ trợ mở đúng tab khi bấm link có hash từ index.html (ví dụ #tab-bt34)
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.location.hash) {
+                const hashId = window.location.hash.substring(1);
+                activateTab(hashId);
+            }
+        });
+
+        // ================= 1. FORM ĐĂNG KÝ (BÀI 35 & 35A) =================
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const fullname = document.getElementById('fullname').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const terms = document.getElementById('terms').checked;
+
+            const nameError = document.getElementById('nameError');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+            const termsError = document.getElementById('termsError');
+            const successMessage = document.getElementById('successMessage');
+
+            nameError.textContent = '';
+            emailError.textContent = '';
+            passwordError.textContent = '';
+            termsError.textContent = '';
+            successMessage.style.display = 'none';
+
+            let isValid = true;
+            if (fullname === '') {
+                nameError.textContent = 'Vui lòng nhập họ và tên.';
+                isValid = false;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                emailError.textContent = 'Địa chỉ email không hợp lệ.';
+                isValid = false;
+            }
+            if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
+                passwordError.textContent = 'Mật khẩu phải từ 8 ký tự, gồm chữ hoa, chữ thường và số.';
+                isValid = false;
+            }
+            if (!terms) {
+                termsError.textContent = 'Bạn phải đồng ý với điều khoản để tiếp tục.';
+                isValid = false;
+            }
+
+            if (isValid) {
+                const hashedPassword = await hashPassword(password);
+                const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+                users.push({ fullname, email, passwordHash: hashedPassword, registeredAt: new Date().toISOString() });
+                localStorage.setItem('registeredUsers', JSON.stringify(users));
+
+                successMessage.textContent = `Đăng ký thành công! Chào mừng ${fullname}.`;
+                successMessage.style.display = 'block';
+                document.getElementById('registerForm').reset();
+            }
+        });
+
+        // ================= 2. ĐỒNG HỒ ĐẾM NGƯỢC (BÀI 35B) =================
+        const INITIAL_TIME = 10 * 60;
+        let timeLeft = INITIAL_TIME;
+        let timerInterval = null;
+        const timerDisplay = document.getElementById('timer');
+
+        function formatTime(sec) {
+            const m = Math.floor(sec / 60);
+            const s = sec % 60;
+            return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function updateTimerDisplay() {
+            timerDisplay.textContent = formatTime(timeLeft);
+            if (timeLeft > 0 && timeLeft < 60) {
+                timerDisplay.classList.add('warning');
+            } else {
+                timerDisplay.classList.remove('warning');
+            }
+        }
+
+        document.getElementById('tStartBtn').addEventListener('click', () => {
+            if (timerInterval !== null || timeLeft <= 0) return;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    alert("⏰ Hết thời gian 10 phút!");
+                }
+            }, 1000);
+        });
+
+        document.getElementById('tPauseBtn').addEventListener('click', () => {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        });
+
+        document.getElementById('tResetBtn').addEventListener('click', () => {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            timeLeft = INITIAL_TIME;
+            updateTimerDisplay();
+        });
+
+        // ================= 4. TRẮC NGHIỆM BÀI 34 =================
+        document.getElementById('submitQuizBtn').addEventListener('click', () => {
+            const answers = { q1: 'c', q2: 'b', q3: 'a', q4: 'c', q5: 'b' };
+            let correct = 0;
+            for (const key in answers) {
+                const selected = document.querySelector(`input[name="${key}"]:checked`);
+                if (selected && selected.value === answers[key]) correct++;
+            }
+            document.getElementById('quiz-result').textContent = `Kết quả: Bạn trả lời đúng ${correct}/5 câu!`;
+        });
+
+        // ================= 5. MINI GAME HỨNG TÁO =================
+        const basket = document.getElementById("basket");
+        const apple = document.getElementById("apple");
+        const scoreEl = document.getElementById("score");
+        const livesEl = document.getElementById("lives");
+        const startGameBtn = document.getElementById("start-game-btn");
+        const gameOverEl = document.getElementById("game-over");
+
+        const containerWidth = 500;
+        const containerHeight = 400;
+        const basketWidth = 80;
+        const appleSize = 26;
+
+        let score = 0;
+        let lives = 3;
+        let basketX = 210;
+        let appleX = 237;
+        let appleY = 0;
+        let fallSpeed = 3;
+        let gameInterval = null;
+        let isPlaying = false;
+
+        document.addEventListener("keydown", function (e) {
+            if (!isPlaying) return;
+            const step = 25;
+            if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                basketX = Math.max(0, basketX - step);
+            } else if (e.key === "ArrowRight") {
+                e.preventDefault();
+                basketX = Math.min(containerWidth - basketWidth, basketX + step);
+            }
+            basket.style.left = basketX + "px";
+        });
+
+        function resetApple() {
+            appleY = 0;
+            appleX = Math.floor(Math.random() * (containerWidth - appleSize));
+            apple.style.top = appleY + "px";
+            apple.style.left = appleX + "px";
+        }
+
+        function updateGame() {
+            appleY += fallSpeed;
+            apple.style.top = appleY + "px";
+
+            const basketTop = containerHeight - 32;
+            const basketBottom = containerHeight - 10;
+            const appleBottom = appleY + appleSize;
+            const appleRight = appleX + appleSize;
+            const basketRight = basketX + basketWidth;
+
+            if (
+                appleBottom >= basketTop &&
+                appleY <= basketBottom &&
+                appleRight >= basketX &&
+                appleX <= basketRight
+            ) {
+                score++;
+                scoreEl.textContent = score;
+                fallSpeed += 0.3;
+                resetApple();
+            } else if (appleY > containerHeight - appleSize) {
+                lives--;
+                livesEl.textContent = lives;
+                if (lives <= 0) {
+                    isPlaying = false;
+                    clearInterval(gameInterval);
+                    gameOverEl.style.display = "block";
+                    startGameBtn.textContent = "Chơi lại";
+                } else {
+                    resetApple();
+                }
+            }
+        }
+
+        startGameBtn.addEventListener("click", () => {
+            clearInterval(gameInterval);
+            score = 0;
+            lives = 3;
+            fallSpeed = 3;
+            basketX = 210;
+            isPlaying = true;
+            scoreEl.textContent = score;
+            livesEl.textContent = lives;
+            basket.style.left = basketX + "px";
+            gameOverEl.style.display = "none";
+            startGameBtn.textContent = "Đang chơi...";
+            resetApple();
+            gameInterval = setInterval(updateGame, 20);
+        });
+    </script>
+</body>
+</html>
